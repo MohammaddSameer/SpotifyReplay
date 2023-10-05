@@ -21,8 +21,7 @@ from PIL import Image
 from io import BytesIO
 import matplotlib.pyplot as plt
 import os
-from matplotlib.offsetbox import OffsetImage, AnnotationBbox
-from matplotlib.font_manager import FontProperties
+
 
 
 
@@ -168,7 +167,7 @@ def get_cover_art_url(track_name, artist_name):
         return results['tracks']['items'][0]['album']['images'][0]['url']
     return None
 
-
+from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
 def create_bar_chart(top_songs):
     song_names = []
@@ -183,43 +182,20 @@ def create_bar_chart(top_songs):
             song_durations_hours.append(duration_hours)
             cover_images.append(Image.open(BytesIO(requests.get(cover_url).content)))
 
-
-    fig, ax = plt.subplots(figsize=(14, 10))
-    fig.patch.set_facecolor('black')
-    ax.set_facecolor('black')
-
-
-
-    # Set the font color to white
-    ax.xaxis.label.set_color('white')
-    ax.yaxis.label.set_color('white')
-    ax.title.set_color('white')
-    ax.tick_params(axis='x', colors='white')
-    ax.tick_params(axis='y', colors='white')
-
-    # Specify the path to your Spotify font file (.otf)
-    spotify_font_path = r'C:\Users\msame\Desktop\SpotifyReplay\CircularStd-Black.otf'
-
-    # Create a FontProperties object with the Spotify font
-    spotify_font = FontProperties(fname=spotify_font_path)
-
-
+    fig, ax = plt.subplots(figsize=(10, 6))
     ax.barh(range(len(cover_images)), song_durations_hours, color='#1DB954')
     ax.set_yticks(range(len(cover_images)))
-    ax.set_yticklabels(song_names,fontproperties=spotify_font, fontsize = 10)
-    ax.set_xlabel('Total Listening Time (hours)', fontproperties=spotify_font, fontsize = 30)
-    ax.set_title('Top Songs by Total Listening Time', fontproperties=spotify_font, fontsize = 30)
+    ax.set_yticklabels(song_names)
+    ax.set_xlabel('Total Listening Time (hours)')
+    ax.set_title('Top Songs by Total Listening Time')
     ax.invert_yaxis()  # Invert y-axis to display the top song at the top
 
     for i, (img, duration) in enumerate(zip(cover_images, song_durations_hours)):
-        img_width = 0.05  # Adjust the width of the image based on the duration (you can change this factor)
+        img_width = 0.03  # Adjust the width of the image based on the duration (you can change this factor)
 
-        # Calculate the x-position to align the image at the end of the bar
-        x_position = duration - 2.5
-
-        # Create an OffsetImage and AnnotationBbox to display the image at the end of the bar
-        img_offset = OffsetImage(img, zoom=img_width, alpha = 1)
-        img_ab = AnnotationBbox(img_offset, (x_position, i), frameon=False)
+        # Create an OffsetImage and AnnotationBbox to display the image alongside the bar
+        img_offset = OffsetImage(img, zoom=img_width)
+        img_ab = AnnotationBbox(img_offset, (0, i), frameon=False)
         ax.add_artist(img_ab)
 
     plt.tight_layout()
@@ -227,65 +203,6 @@ def create_bar_chart(top_songs):
     plt.show()
 
 
-
-
-
-
-
-
-def main():
-    file_paths = ["StreamingHistory0.json", "StreamingHistory1.json", "StreamingHistory2.json"]
-    #file_paths = ["StreamingHistoryMain0.json", "StreamingHistoryMain1.json"]
-    #file_paths = ["StreamingHistory0V2.json", "StreamingHistory1V2.json"]
-    #file_paths = ["StreamingHistory0S.json", "StreamingHistory1S.json", "StreamingHistory2S.json"]
-    #file_paths = ["StreamingHistory0Z.json", "StreamingHistory1Z.json", "StreamingHistory2Z.json"]
-    #file_paths = ["StreamingHistory0D.json", "StreamingHistory1D.json", "StreamingHistory2D.json", "StreamingHistory3D.json", "StreamingHistory4D.json", "StreamingHistory5D.json"]
-
-    image_path = ''
-
-    songs = load_data(file_paths)
-
-    
-
-    while True:
-        print("**********************************")
-        print("Choose an option:")
-        print("1. Show top songs by play count")
-        print("2. Show top songs by duration")
-        print("3. Search for a song")
-        print("4. Search for an artist")
-        print("5. Quit")
-        print("**********************************")
-
-
-        choice = input("Enter your choice: ")
-        if os.path.exists(image_path):
-            os.remove(image_path)
-
-        if choice == "1":
-            num_songs = int(input("Enter the number of songs to show: "))
-            top_songs_by_play_count(songs, num_songs)
-        elif choice == "2":
-            num_songs = int(input("Enter the number of songs to show: "))
-            top_songs_by_duration(songs, num_songs)
-        elif choice == "3":
-            query = input("Enter a search query: ")
-            search_for_song(songs, query)
-        elif choice == "4":
-            query = input("Enter a search query: ")
-            image_path = search_for_artist(songs, query)
-            print(image_path)
-        elif choice == "5":
-            num_songs = 10  # Top 10 songs
-            top_songs = get_top_songs_by_duration(songs, num_songs)
-            create_bar_chart(top_songs)
-        elif choice == "6":
-            break
-        else:
-            print("Invalid choice. Please try again.")
-
-if __name__ == "__main__":
-    main()
 
 
 
