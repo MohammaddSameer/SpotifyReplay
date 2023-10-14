@@ -252,16 +252,20 @@ def create_bar_chart(top_songs):
     img_width = max(0.01, 0.5 / num_songs)  # Calculate the image width based on the number of songs
 
     fig, ax = plt.subplots(figsize=(14, 10))
-    fig.patch.set_facecolor('black')
-    ax.set_facecolor('black')
+    fig.patch.set_facecolor('#6C02BC')
+    ax.set_facecolor('#6C02BC')
 
 
     # Set the font color to white
-    ax.xaxis.label.set_color('white')
-    ax.yaxis.label.set_color('white')
-    ax.title.set_color('white')
-    ax.tick_params(axis='x', colors='white')
-    ax.tick_params(axis='y', colors='white')
+    ax.xaxis.label.set_color('#F4FE46')
+    ax.yaxis.label.set_color('#F4FE46')
+    ax.title.set_color('#F4FE46')
+    ax.tick_params(axis='x', colors='#F4FE46')
+    ax.tick_params(axis='y', colors='#F4FE46')
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['bottom'].set_visible(False)
+    ax.spines['left'].set_visible(False)
 
     # Specify the path to your Spotify font file (.otf)
     spotify_font_path = '.\CircularStd-Black.otf'
@@ -351,10 +355,10 @@ def create_artist_bar_chart(top_artists):
 
 
 def main():
-    #file_paths = ["StreamingHistory0.json", "StreamingHistory1.json", "StreamingHistory2.json"]
+    file_paths = ["StreamingHistory0.json", "StreamingHistory1.json", "StreamingHistory2.json"]
     #file_paths = ["StreamingHistoryMain0.json", "StreamingHistoryMain1.json"]
     #file_paths = ["StreamingHistory0V2.json", "StreamingHistory1V2.json"]
-    file_paths = ["StreamingHistory0A.json", "StreamingHistory1A.json", "StreamingHistory2A.json"]
+    #file_paths = ["StreamingHistory0A.json", "StreamingHistory1A.json", "StreamingHistory2A.json"]
     #file_paths = ["StreamingHistory0Z.json", "StreamingHistory1Z.json", "StreamingHistory2Z.json"]
     #file_paths = ["StreamingHistory0D.json", "StreamingHistory1D.json", "StreamingHistory2D.json", "StreamingHistory3D.json", "StreamingHistory4D.json", "StreamingHistory5D.json"]
 

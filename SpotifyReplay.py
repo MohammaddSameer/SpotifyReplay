@@ -1,15 +1,9 @@
 #!/usr/bin/env python3
 
 
-# TO DO
-# Add a menu
-# Sort songs by most time played (dynamic time ex. 75 mins prints as 1h 15 mins)
-# Most played artists
-# Search for a song
-# Search for an artist
-# make functions to open file
-# Make a bar graph showing an artist and their time played each month for a year
 
+from pathlib import Path
+from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, Label
 import json
 from collections import defaultdict
 import datetime
@@ -23,6 +17,15 @@ import matplotlib.pyplot as plt
 import os
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from matplotlib.font_manager import FontProperties
+
+
+OUTPUT_PATH = Path(__file__).parent
+ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\msame\Desktop\SpotifyReplay\build\assets\frame0")
+
+
+def relative_to_assets(path: str) -> Path:
+    return ASSETS_PATH / Path(path)
+
 
 
 
@@ -85,34 +88,27 @@ def top_songs_by_play_count(songs, num_songs):
     for i, ((artist, track), data) in enumerate(sorted_songs[:num_songs]):
         play_count = data['play_count']
         top_songs_text += f"{i+1}. {artist} \"{track}\" ({play_count} plays)\n"
-    
-    print (top_songs_text)
+
+    return top_songs_text
+
+
+
 
 
 
 
 def top_songs_by_duration(songs, num_songs):
     sorted_songs = sorted(songs.items(), key=lambda x: x[1]['duration'], reverse=True)
+    top_songs_text = ""
     for i, ((artist, track), song_data) in enumerate(sorted_songs[:num_songs]):
         duration = song_data['duration']
         formatted_duration = format_duration(duration)
-        play_count = song_data['play_count']
-        print(f"{i+1}. {artist} \"{track}\" ({formatted_duration})")
-    print()
+        top_songs_text += (f"{i+1}. {artist} \"{track}\" ({formatted_duration})\n")
+
+    return top_songs_text
 
 
 
-
-def search_for_song(songs, query):
-    matching_songs = filter(lambda x: query.lower() in x[0][1].lower(), songs.items())
-    sorted_songs = sorted(matching_songs, key=lambda x: x[1]['play_count'], reverse=True)
-    if not sorted_songs:
-        print(f"No song found matching '{query}'")
-        return
-
-    for i, ((artist, track), song_data) in enumerate(sorted_songs):
-        play_count = song_data['play_count']
-        print(f"{i+1}. {artist} \"{track}\" ({play_count} plays)")
 
 
 
@@ -125,11 +121,13 @@ def top_artists_by_duration(songs, num_artists):
 
     # Sort artists by total listening duration
     sorted_artists = sorted(artist_durations.items(), key=lambda x: x[1], reverse=True)
+    top_artist_text = ""
 
     # Display the top artists
     for i, (artist, duration) in enumerate(sorted_artists[:num_artists]):
         formatted_duration = format_duration(duration)
-        print(f"{i+1}. {artist} ({formatted_duration})")
+        top_artist_text += (f"{i+1}. {artist} ({formatted_duration})\n")
+    return top_artist_text
 
 
 
@@ -144,53 +142,15 @@ def top_artists_by_play_count(songs, num_artists):
 
     # Sort artists by play count
     sorted_artists = sorted(artist_play_counts.items(), key=lambda x: x[1], reverse=True)
+    top_artist_text = ""
 
     # Display the top artists
     for i, (artist, play_count) in enumerate(sorted_artists[:num_artists]):
-        print(f"{i+1}. {artist} ({play_count} plays)")
+        top_artist_text += (f"{i+1}. {artist} ({play_count} plays)\n")
+    return top_artist_text
 
 
-
-
-
-
-def search_for_artist(songs, query):
-    matching_songs = filter(lambda x: query.lower() in x[0][0].lower(), songs.items())
-    artist_play_counts = defaultdict(int)
-    for (artist, track), data in matching_songs:
-        artist_play_counts[artist] += data['play_count']
-    sorted_artists = sorted(artist_play_counts.items(), key=lambda x: x[1], reverse=True)
-    if not sorted_artists:
-        print(f"No artist found matching '{query}'")
-        return
-
-
-
-    for i, (artist, play_count) in enumerate(sorted_artists):
-        print(f"{i+1}. {artist}")
-
-    while True:
-        artist_num = input("Enter the number of the artist you want to view, or 'q' to quit: ")
-        if artist_num == 'q':
-            break
-        try:
-            artist_num = int(artist_num)
-            if artist_num < 1 or artist_num > len(sorted_artists):
-                raise ValueError
-        except ValueError:
-            print("Invalid input, please enter a valid artist number or 'q' to quit.")
-            continue
-
-        artist_name, _ = sorted_artists[artist_num - 1]
-
-        matching_songs = filter(lambda x: x[0][0] == artist_name, songs.items())
-        sorted_songs = sorted(matching_songs, key=lambda x: x[1]['play_count'], reverse=True)
-        for i, ((_, track), data) in enumerate(sorted_songs):
-            play_count = data['play_count']
-            print(f"{i+1}. \"{track}\" ({play_count} plays)")
-        break
-
-
+   
 
 
 
@@ -355,71 +315,123 @@ def create_artist_bar_chart(top_artists):
 
 
 
+def make_label_top_songs_play_count():
+    top_songs_text = top_songs_by_play_count(songs, 10)
 
-def main():
-    #file_paths = ["StreamingHistory0.json", "StreamingHistory1.json", "StreamingHistory2.json"]
-    #file_paths = ["StreamingHistoryMain0.json", "StreamingHistoryMain1.json"]
-    #file_paths = ["StreamingHistory0V2.json", "StreamingHistory1V2.json"]
-    file_paths = ["StreamingHistory0A.json", "StreamingHistory1A.json", "StreamingHistory2A.json"]
-    #file_paths = ["StreamingHistory0Z.json", "StreamingHistory1Z.json", "StreamingHistory2Z.json"]
-    #file_paths = ["StreamingHistory0D.json", "StreamingHistory1D.json", "StreamingHistory2D.json", "StreamingHistory3D.json", "StreamingHistory4D.json", "StreamingHistory5D.json"]
+    global label
+    label = Canvas(window, bg="#6C02BB", width=1500, height=1000, borderwidth=0, highlightthickness=0)
+    label.place(x=370, y=170)
 
-    image_path = ''
+    y = 20  # Initial y-coordinate
+    line_spacing = 75 # Adjust this value to control vertical spacing
 
-    songs = load_data(file_paths)
+    for line in top_songs_text.split('\n'):
+        label.create_text(10, y, anchor="w", text=line, fill="#F4FE46", font=("CircularStd Medium", 25), justify="left")
+        y += line_spacing
+
+
+
+def make_label_top_songs_time_played():
+    top_songs_text = top_songs_by_duration(songs, 10)
+
+    global label
+    label = Canvas(window, bg="#6C02BB", width=1500, height=1000, borderwidth=0, highlightthickness=0)
+    label.place(x=370, y=170)
+
+    y = 20  # Initial y-coordinate
+    line_spacing = 75 # Adjust this value to control vertical spacing
+
+    for line in top_songs_text.split('\n'):
+        label.create_text(10, y, anchor="w", text=line, fill="#F4FE46", font=("CircularStd Medium", 25), justify="left")
+        y += line_spacing
+
+
+
+def make_label_top_artists_play_count():
+    top_artists_text = top_artists_by_play_count(songs, 10)
+
+    global label
+    label = Canvas(window, bg="#6C02BB", width=1500, height=1000, borderwidth=0, highlightthickness=0)
+    label.place(x=370, y=170)
+
+    y = 20  # Initial y-coordinate
+    line_spacing = 75 # Adjust this value to control vertical spacing
+
+    for line in top_artists_text.split('\n'):
+        label.create_text(10, y, anchor="w", text=line, fill="#F4FE46", font=("CircularStd Medium", 35), justify="left")
+        y += line_spacing
+
+
+
+def make_label_top_artists_time_played():
+    top_artists_text = top_artists_by_duration(songs, 10)
+
+    global label
+    label = Canvas(window, bg="#6C02BB", width=1500, height=1000, borderwidth=0, highlightthickness=0)
+    label.place(x=370, y=170)
+
+    y = 20  # Initial y-coordinate
+    line_spacing = 75 # Adjust this value to control vertical spacing
+
+    for line in top_artists_text.split('\n'):
+        label.create_text(10, y, anchor="w", text=line, fill="#F4FE46", font=("CircularStd Medium", 35), justify="left")
+        y += line_spacing
 
     
 
-    while True:
-        print("**********************************")
-        print("Choose an option:")
-        print("1. Show top songs by play count")
-        print("2. Show top songs by duration")
-        print("3. Show top arists by play count")
-        print("4. Show top artists by duration")
-        print("5. Display graph of top songs by duration")
-        print("6. Display graph of top artists by duration")
-        print("7. Search for a song")
-        print("8. Search for an artist")
-        print("9. Quit")
-        print("**********************************")
 
 
-        choice = input("Enter your choice: ")
-        if os.path.exists(image_path):
-            os.remove(image_path)
+file_paths = ["StreamingHistory0.json", "StreamingHistory1.json", "StreamingHistory2.json"]
+#file_paths = ["StreamingHistory0A.json", "StreamingHistory1A.json", "StreamingHistory2A.json"]
 
-        if choice == "1":
-            num_songs = int(input("Enter the number of songs to show: "))
-            top_songs_by_play_count(songs, num_songs)
-        elif choice == "2":
-            num_songs = int(input("Enter the number of songs to show: "))
-            top_songs_by_duration(songs, num_songs)
-        elif choice == "3":
-            num_artists = int(input("Enter the number of artists to show: "))
-            top_artists_by_play_count(songs, num_artists)
-        elif choice == "4":
-            num_artists = int(input("Enter the number of artists to show: "))
-            top_artists_by_duration(songs, num_artists)
-            print(image_path)
-        elif choice == "5":
-            num_songs = int(input("Enter the number of songs to show: "))
-            top_songs = get_top_songs_by_duration(songs, num_songs)
-            create_bar_chart(top_songs)
-        elif choice == "6":
-            num_songs = int(input("Enter the number of songs to show: "))
-            top_artists = get_top_artists_by_duration(songs, num_songs)
-            create_artist_bar_chart(top_artists)
-        elif choice == "7":
-            query = input("Enter a search query: ")
-            search_for_song(songs, query)
-        elif choice == "8":
-            query = input("Enter a search query: ")
-            image_path = search_for_artist(songs, query)
-        elif choice == "9":
-            break
-        else:
-            print("Invalid choice. Please try again.")
 
-if __name__ == "__main__":
-    main()
+songs = load_data(file_paths)
+
+
+
+window = Tk()
+
+window.geometry("1440x1024")
+window.configure(bg = "#6C02BB")
+
+
+canvas = Canvas(window,bg = "#6C02BB", height = 1024, width = 1440, bd = 0,highlightthickness = 0, relief = "ridge")
+
+canvas.place(x = 0, y = 0)
+canvas.create_rectangle(0.0, 0.0, 362.0, 1024.0, fill="#7E04D8",outline="")
+
+button_image_1 = PhotoImage(file=relative_to_assets("button_1.png"))
+button_1 = Button(image=button_image_1, borderwidth=0, highlightthickness=0, command=lambda: print("button_1 clicked"), relief="flat")
+button_1.place(x=26.0, y=831.0, width=309.0, height=92.0)
+
+
+button_image_2 = PhotoImage(file=relative_to_assets("button_2.png"))
+button_2 = Button(image=button_image_2, borderwidth=0, highlightthickness=0, command=lambda: print("button_2 clicked"), relief="flat")
+button_2.place(x=26.0, y=680.0, width=309.0, height=92.0)
+
+
+button_image_3 = PhotoImage(file=relative_to_assets("button_3.png"))
+button_3 = Button(image=button_image_3, borderwidth=0, highlightthickness=0, command= make_label_top_artists_play_count,relief="flat")
+button_3.place(x=26.0, y=378.0, width=309.0, height=92.0)
+
+
+button_image_4 = PhotoImage(file=relative_to_assets("button_4.png"))
+button_4 = Button(image=button_image_4, borderwidth=0, highlightthickness=0, command= make_label_top_songs_time_played, relief="flat")
+button_4.place(x=26.0, y=227.0, width=309.0, height=92.0)
+
+
+button_image_5 = PhotoImage(file=relative_to_assets("button_5.png"))
+button_5 = Button(image=button_image_5, borderwidth=0, highlightthickness=0, command= make_label_top_songs_play_count, relief="flat")
+button_5.place(x=26.0, y=76.0, width=309.0,height=92.0)
+
+
+button_image_6 = PhotoImage(file=relative_to_assets("button_6.png"))
+button_6 = Button(image=button_image_6, borderwidth=0, highlightthickness=0, command=make_label_top_artists_time_played,relief="flat")
+button_6.place(x=26.0, y=529.0, width=309.0, height=92.0)
+
+
+canvas.create_text(553.0, 27.0, anchor="nw", text="Spotify Replay", fill="#F4FE46",font=("CircularStd Medium", 96 * -1))
+
+
+window.resizable(True, True)
+window.mainloop()
