@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 
-
 from pathlib import Path
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, Label, filedialog
 import json
+import keys
 from collections import defaultdict
 import datetime
 from collections import defaultdict
@@ -30,7 +30,7 @@ def relative_to_assets(path: str) -> Path:
 
 
 scope = "user-library-read"
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id="df93e00dbc434caab50d3e05cc59386d", client_secret="10237c2063664b94949b7a22c550c3f6",
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id="df93e00dbc434caab50d3e05cc59386d", client_secret= keys.api_keys,
                                                 redirect_uri="http://8080/callback", scope=scope))
 
 

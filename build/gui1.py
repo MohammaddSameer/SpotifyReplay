@@ -40,7 +40,7 @@ canvas.create_rectangle(
     0.0,
     362.0,
     1024.0,
-    fill="#7005BF",
+    fill="#7E04D8",
     outline="")
 
 button_image_1 = PhotoImage(
@@ -87,7 +87,7 @@ button_3 = Button(
 button_3.place(
     x=26.0,
     y=378.0,
-    width=310.0,
+    width=309.0,
     height=92.0
 )
 
@@ -140,21 +140,41 @@ button_6.place(
 )
 
 canvas.create_text(
-    390.0,
-    31.0,
+    1030.0,
+    37.0,
     anchor="nw",
-    text="Top Songs by Play Count",
-    fill="#F4FE46",
-    font=("CircularStd Medium", 80 * -1)
+    text="Spotify Replay",
+    fill="#FFFFFF",
+    font=("CircularStd Bold", 50 * -1)
 )
 
 canvas.create_text(
-    393.0989990234375,
-    177.62725830078125,
+    335.0,
+    136.0,
     anchor="nw",
-    text="1. SZA "Awkward" (413 plays)\n2. Ramin Djawadi "The Power of Prophecy" (202 plays)\n3. Gunna "pushin P (feat. Young Thug)" (199 plays)\n4. Drake "More M’s" (173 plays)\n5. Yeat "Flawlëss (feat. Lil Uzi Vert)" (170 plays)\n6. Frank Ocean "Pink + White" (167 plays)\n7. Beach House "Drunk In LA" (164 plays)\n8. Beach House "Space Song" (158 plays)\n9. The Weeknd "Starboy" (157 plays)\n10. Gunna "poochie gown" (152 plays)",
+    text="Enter a Song Name:  ",
     fill="#F4FE46",
-    font=("CircularStd Medium", 40 * -1)
+    font=("CircularStd Medium", 60 * -1)
+)
+
+entry_image_1 = PhotoImage(
+    file=relative_to_assets("entry_1.png"))
+entry_bg_1 = canvas.create_image(
+    1203.5,
+    193.5,
+    image=entry_image_1
+)
+entry_1 = Entry(
+    bd=0,
+    bg="#7F05D9",
+    fg="#000716",
+    highlightthickness=0
+)
+entry_1.place(
+    x=994.0,
+    y=152.0,
+    width=419.0,
+    height=81.0
 )
 window.resizable(False, False)
 window.mainloop()

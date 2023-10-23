@@ -81,12 +81,10 @@ def format_duration(duration):
 
 def top_songs_by_play_count(songs, num_songs):
     sorted_songs = sorted(songs.items(), key=lambda x: x[1]['play_count'], reverse=True)
-    top_songs_text = ""
     for i, ((artist, track), data) in enumerate(sorted_songs[:num_songs]):
         play_count = data['play_count']
-        top_songs_text += f"{i+1}. {artist} \"{track}\" ({play_count} plays)\n"
-    
-    print (top_songs_text)
+        print(f"{i+1}. {artist} \"{track}\" ({play_count} plays)")
+    print()
 
 
 
@@ -106,6 +104,7 @@ def top_songs_by_duration(songs, num_songs):
 def search_for_song(songs, query):
     matching_songs = filter(lambda x: query.lower() in x[0][1].lower(), songs.items())
     sorted_songs = sorted(matching_songs, key=lambda x: x[1]['play_count'], reverse=True)
+    
     if not sorted_songs:
         print(f"No song found matching '{query}'")
         return
@@ -113,6 +112,25 @@ def search_for_song(songs, query):
     for i, ((artist, track), song_data) in enumerate(sorted_songs):
         play_count = song_data['play_count']
         print(f"{i+1}. {artist} \"{track}\" ({play_count} plays)")
+
+    while True:
+        song_num = input("Enter the number of the song you want to view, or 'q' to quit: ")
+        if song_num == 'q':
+            break
+        try:
+            song_num = int(song_num)
+            if song_num < 1 or song_num > len(sorted_songs):
+                raise ValueError
+        except ValueError:
+            print("Invalid input, please enter a valid song number or 'q' to quit.")
+            continue
+
+        (artist_name, song_name), song_data = sorted_songs[song_num - 1]
+        play_count = song_data['play_count']
+        print(f"Song: \"{song_name}\" by {artist_name}")
+        print(f"Play Count: {play_count} plays")
+        break
+
 
 
 
@@ -163,8 +181,6 @@ def search_for_artist(songs, query):
     if not sorted_artists:
         print(f"No artist found matching '{query}'")
         return
-
-
 
     for i, (artist, play_count) in enumerate(sorted_artists):
         print(f"{i+1}. {artist}")
@@ -357,10 +373,10 @@ def create_artist_bar_chart(top_artists):
 
 
 def main():
-    #file_paths = ["StreamingHistory0.json", "StreamingHistory1.json", "StreamingHistory2.json"]
+    file_paths = ["StreamingHistory0.json", "StreamingHistory1.json", "StreamingHistory2.json"]
     #file_paths = ["StreamingHistoryMain0.json", "StreamingHistoryMain1.json"]
     #file_paths = ["StreamingHistory0V2.json", "StreamingHistory1V2.json"]
-    file_paths = ["StreamingHistory0A.json", "StreamingHistory1A.json", "StreamingHistory2A.json"]
+    #file_paths = ["StreamingHistory0A.json", "StreamingHistory1A.json", "StreamingHistory2A.json"]
     #file_paths = ["StreamingHistory0Z.json", "StreamingHistory1Z.json", "StreamingHistory2Z.json"]
     #file_paths = ["StreamingHistory0D.json", "StreamingHistory1D.json", "StreamingHistory2D.json", "StreamingHistory3D.json", "StreamingHistory4D.json", "StreamingHistory5D.json"]
 

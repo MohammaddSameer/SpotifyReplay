@@ -144,7 +144,7 @@ canvas.create_text(
     27.0,
     anchor="nw",
     text="Spotify Replay",
-    fill="#F4FE46",
+    fill="#FFFFFF",
     font=("CircularStd Medium", 96 * -1)
 )
 window.resizable(False, False)
