@@ -1,4 +1,5 @@
 keys.py
-*.cache
+.cache
 build/
 Tkinter-Designer/
+__pycache__/
