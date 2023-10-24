@@ -2,7 +2,8 @@
 
 Spotify Replay is a Python-based application that interacts with the Spotify API and JSON files to provide insights into your listening history on Spotify over the past year.
 
-![SpotifyReplayScreenShot](https://github.com/MohammaddSameer/SpotifyReplay/assets/138824243/80743071-ef3b-4ba0-9368-613c6a0a1c18)
+![Desktop - 15](https://github.com/MohammaddSameer/SpotifyReplay/assets/138824243/461ce666-7506-44ad-a547-3b29dc2f2e66)
+
 
 # Getting Started
 
