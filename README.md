@@ -27,10 +27,16 @@ Spotify Replay is a Python-based application that interacts with the Spotify API
 ![SpotifyReplay_DowloadJsonFiles](https://github.com/MohammaddSameer/SpotifyReplay/assets/138824243/ab2d8d40-0842-4aa3-9532-382025f35503)
 
 
->May take up to 5 days to recieve JSON files in your email
+>May take up to 5 days to recieve JSON files in your email. Program uses JSON files in SpotifyReplay repo as default
+
+2. **Clone Repository**
+```bash
+git clone https://github.com/MohammaddSameer/SpotifyReplay.git
+```
 
 
-2. **Get API keys**
+
+3. **Get API keys**
 * [See Guide](https://developer.spotify.com/documentation/web-api/tutorials/getting-started)
 
 * Put in .env file like so:
@@ -39,7 +45,7 @@ client_id_key = <insert client id here>
 client_secret_key = <insert client secret here>
 ```
 
-3. **Install Libraries** 
+4. **Install Libraries** 
 ```bash
 pip install -r requirements.txt     
 ```
