@@ -19,6 +19,11 @@ Spotify Replay is a Python-based application that interacts with the Spotify API
 ![SpotifyReplay_DowloadJsonFiles](https://github.com/MohammaddSameer/SpotifyReplay/assets/138824243/ab2d8d40-0842-4aa3-9532-382025f35503)
 
 
+```bash
+pip install -r requirements.txt     
+```
+
+
 
 
 

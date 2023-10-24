@@ -4,9 +4,7 @@
 from pathlib import Path
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, Label, filedialog
 import json
-import keys
 from collections import defaultdict
-import datetime
 from collections import defaultdict
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
@@ -17,6 +15,7 @@ import matplotlib.pyplot as plt
 import os
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from matplotlib.font_manager import FontProperties
+from dotenv import load_dotenv
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -26,11 +25,15 @@ ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\msame\Desktop\SpotifyReplay\assets")
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
+load_dotenv()
+client_id_key = os.getenv("client_id_key")
+secret_key = os.getenv("client_secret_key")
+
 
 
 
 scope = "user-library-read"
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id="df93e00dbc434caab50d3e05cc59386d", client_secret= keys.api_keys,
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id= client_id_key, client_secret= secret_key,
                                                 redirect_uri="http://8080/callback", scope=scope))
 
 
