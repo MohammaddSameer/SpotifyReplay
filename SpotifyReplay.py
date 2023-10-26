@@ -19,7 +19,7 @@ from dotenv import load_dotenv
 
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\msame\Desktop\SpotifyReplay\assets")
+ASSETS_PATH = OUTPUT_PATH / Path(r"./assets")
 
 
 def relative_to_assets(path: str) -> Path:
