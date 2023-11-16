@@ -218,7 +218,7 @@ def get_top_artists_by_duration(songs, num_artists):
 
 def search_for_song(songs, query):
     matching_songs = filter(lambda x: query.lower() in x[0][1].lower(), songs.items())
-    sorted_songs = sorted(matching_songs, key=lambda x: x[1]['play_count'], reverse=True)
+    sorted_songs = sorted(matching_songs, key=lambda x: x[1]['duration'], reverse=True)
     
     if not sorted_songs:
         return(f"No song found matching '{query}'")
@@ -227,8 +227,9 @@ def search_for_song(songs, query):
     search_results = ''
 
     for i, ((artist, track), song_data) in enumerate(sorted_songs):
-        play_count = song_data['play_count']
-        search_results += (f"{i+1}. {artist} \"{track}\" ({play_count} plays)\n")
+        duration = song_data['duration']
+        formatted_duration = format_duration(duration)
+        search_results += (f"{i+1}. {artist} \"{track}\" ({formatted_duration})\n")
 
     return search_results
 
