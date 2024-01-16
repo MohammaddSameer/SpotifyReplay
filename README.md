@@ -57,7 +57,7 @@ pip install -r requirements.txt
 ## Usage
 
 ```bash
-python SpotifyReplay.py    
+python3 SpotifyReplay.py    
 ```
 
 # Constraints

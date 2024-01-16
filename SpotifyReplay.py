@@ -142,7 +142,7 @@ def top_songs_by_duration(songs, num_songs):
     for i, ((artist, track), song_data) in enumerate(sorted_songs[:num_songs]):
         duration = song_data['duration']
         formatted_duration = format_duration(duration)
-        top_songs_text += (f"{i+1}. {artist} \"{track}\" ({formatted_duration})\n")
+        top_songs_text += (f"({i+1}. {artist} \"{track}\" ({formatted_duration})\n")
 
     return top_songs_text
 
@@ -257,16 +257,17 @@ def search_for_song(songs, query):
 
 def search_for_artist(songs, query):
     matching_songs = filter(lambda x: query.lower() in x[0][0].lower(), songs.items())
-    artist_play_counts = defaultdict(int)
+    artist_duration = defaultdict(int)
     for (artist, track), data in matching_songs:
-        artist_play_counts[artist] += data['play_count']
-    sorted_artists = sorted(artist_play_counts.items(), key=lambda x: x[1], reverse=True)
+        artist_duration[artist] += data['duration']
+    sorted_artists = sorted(artist_duration.items(), key=lambda x: x[1], reverse=True)
     if not sorted_artists:
         return(f"No artist found matching '{query}'")
     
     artists_results = ''
-    for i, (artist, play_count) in enumerate(sorted_artists):
-        artists_results += (f"{i+1}. {artist} ({play_count} plays)\n")
+    for i, (artist, duration) in enumerate(sorted_artists):
+        duration = format_duration(duration)
+        artists_results += (f"{i+1}. {artist} ({duration}\n")
     return artists_results
 
     # while True:

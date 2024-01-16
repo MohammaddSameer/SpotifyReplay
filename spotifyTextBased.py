@@ -373,7 +373,7 @@ def create_artist_bar_chart(top_artists):
 
 
 def main():
-    file_paths = ["StreamingHistory0.json", "StreamingHistory1.json", "StreamingHistory2.json"]
+    file_paths = ["StreamingHistory0.json", "StreamingHistory1.json", "StreamingHistory2.json", "StreamingHistoryUpdated.json"]
     #file_paths = ["StreamingHistoryMain0.json", "StreamingHistoryMain1.json"]
     #file_paths = ["StreamingHistory0V2.json", "StreamingHistory1V2.json"]
     #file_paths = ["StreamingHistory0A.json", "StreamingHistory1A.json", "StreamingHistory2A.json"]
