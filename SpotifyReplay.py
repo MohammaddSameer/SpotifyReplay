@@ -142,7 +142,7 @@ def top_songs_by_duration(songs, num_songs):
     for i, ((artist, track), song_data) in enumerate(sorted_songs[:num_songs]):
         duration = song_data['duration']
         formatted_duration = format_duration(duration)
-        top_songs_text += (f"({i+1}. {artist} \"{track}\" ({formatted_duration})\n")
+        top_songs_text += (f"{i+1}. {artist} \"{track}\" ({formatted_duration})\n")
 
     return top_songs_text
 
@@ -267,7 +267,7 @@ def search_for_artist(songs, query):
     artists_results = ''
     for i, (artist, duration) in enumerate(sorted_artists):
         duration = format_duration(duration)
-        artists_results += (f"{i+1}. {artist} ({duration}\n")
+        artists_results += (f"{i+1}. {artist} ({duration})\n")
     return artists_results
 
     # while True:
