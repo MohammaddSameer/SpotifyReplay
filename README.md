@@ -69,8 +69,7 @@ python3 SpotifyReplay.py
 
 * Add button that let's user change color scheme of program
 
-* Implement graphs of song and artist data 
-
+* Make labels scrollable
 
 
 
