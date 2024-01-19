@@ -23,11 +23,16 @@ import matplotlib.pyplot as plt
 import os
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from matplotlib.font_manager import FontProperties
+from dotenv import load_dotenv
 
+
+load_dotenv()
+client_id_key = os.getenv("client_id_key")
+secret_key = os.getenv("client_secret_key")
 
 
 scope = "user-library-read"
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id="df93e00dbc434caab50d3e05cc59386d", client_secret="10237c2063664b94949b7a22c550c3f6",
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id= client_id_key, client_secret= secret_key,
                                                 redirect_uri="http://8080/callback", scope=scope))
 
 
@@ -332,15 +337,15 @@ def create_artist_bar_chart(top_artists):
     img_width = max(0.01, 0.5 / num_artists)  # Calculate the image width based on the number of artists
 
     fig, ax = plt.subplots(figsize=(14, 10))
-    fig.patch.set_facecolor('black')
-    ax.set_facecolor('black')
+    fig.patch.set_facecolor('#6C02BC')
+    ax.set_facecolor('#6C02BC')
 
     # Set the font color to white
-    ax.xaxis.label.set_color('white')
-    ax.yaxis.label.set_color('white')
-    ax.title.set_color('white')
-    ax.tick_params(axis='x', colors='white')
-    ax.tick_params(axis='y', colors='white')
+    ax.xaxis.label.set_color('#F4FE46')
+    ax.yaxis.label.set_color('#F4FE46')
+    ax.title.set_color('#F4FE46')
+    ax.tick_params(axis='x', colors='#F4FE46')
+    ax.tick_params(axis='y', colors='#F4FE46')
 
     # Specify the path to your Spotify font file (.otf)
     spotify_font_path = '.\CircularStd-Black.otf'
