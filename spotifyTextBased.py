@@ -389,7 +389,6 @@ def main():
 
     songs = load_data(file_paths)
 
-    
 
     while True:
         print("**********************************")

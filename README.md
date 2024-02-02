@@ -18,7 +18,7 @@ Spotify Replay is a Python-based application that interacts with the Spotify API
 
 * Spotify Developer Account
 
-* spotipy, requests, Pillow, matplotlib, python-dotenv libraries
+* spotipy, requests, Pillow, matplotlib, python-dotenv libraries, tkinter
 
 ## Installation
 
